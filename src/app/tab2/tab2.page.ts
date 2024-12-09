@@ -34,6 +34,9 @@ export class Tab2Page {
   /* Nombre de la colección */
   collectionName = 'reviews';
 
+  /*Arreglo con datos locales*/
+  dataList: any[] = [];
+
   /* Inyecte la dependencia a Firestore */
   constructor(private providerService: ProviderService) { }
 
@@ -42,6 +45,17 @@ export class Tab2Page {
     this.providerService.createDocument(this.collectionName, this.myForm.value).then(() => {
         this.myForm.reset()
     });
-}
+  }
+
+  /*Al inicializar, carga los datos*/
+  ngOnInit() {
+    this.loadData();
+  }
+
+  loadData() {
+    this.providerService.readCollection(this.collectionName).subscribe((data) => {
+      this.dataList = data;
+    });
+  }
 
 }
