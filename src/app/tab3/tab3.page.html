@@ -10,22 +10,76 @@
 
   <ion-card>
     <ion-card-header>
-
-      <ion-card-title class="titulo">Descripción de la App</ion-card-title>
-
+      <ion-card-title class="titulo">GreenThread</ion-card-title>
     </ion-card-header>
+    <ion-card-subtitle>Transformando la forma en que gestionamos la ropa usada</ion-card-subtitle>
 
     <ion-card-content>
-      <p id="descripcion">
-        GreenThread es una aplicación para los hogares de la comunidad que permite clasificar
-        ropa en desuso para promover las prácticas sostenibles. Del mismo modo la aplicación
-        permite a los usuarios encontrar el mejor destino para cada pieza, ya sea donarla a 
-        quienes la necesitan, enviarla a talleres para reparar o a centros de reciclaje textil.
-        GreenThread fomenta el uso prolongado de prendas para reducir el impacto ambiental al 
-        evitar el desperdicio de textiles y promoviendo el consumo responsable entre sus usuarios.
-      </p>
+      <div class="estadisticas">
+        <div class="items-estadisticas">
+          <h2>2,500+</h2>
+          <p>Prendas Recicladas</p>
+        </div>
+        <div class="items-estadisticas">
+          <h2>1,200+</h2>
+          <p>Usuarios activos</p>
+        </div>
+        <div class="items-estadisticas">
+          <h2>500+</h2>
+          <p>Donaciones Exitosas</p>
+        </div>
+      </div>
     </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
+      <div class="servicios">
+        <div class="servicio-item">
+          <ion-icon [icon]="leafIcon" size="large"></ion-icon>
+          <h3>Impacto ambiental</h3>
+          <p>Reducimos el desperdicio textil y promovemos la sostenibilidad de moda.</p>
+        </div>
+      
+        <div class="servicio-item">
+          <ion-icon [icon]="analyticsIcon" size="large"></ion-icon>
+          <h3>Clasificación inteligente</h3>
+          <p>Nuestra tecnología determina el mejor destino de cada prenda.</p>
+        </div>
+      
+        <div class="servicio-item">
+          <ion-icon [icon]="peopleIcon" size="large"></ion-icon>
+          <h3>Ayuda Comunitaria</h3>
+          <p>Conectamos donantes con personas que necesitan las prendas.</p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>¿Cómo funciona?</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="pasos">
+        <div class="paso-item">
+          <div class="paso-numero">1</div>
+          <h3>Sube tu prenda</h3>
+          <p>Toma una foto de la prenda que deseas clasificar.</p>
+        </div>
+
+        <div class="paso-item">
+          <div class="paso-numero">2</div>
+          <h3>Obtén recomendaciones</h3>
+          <p>Nuestra IA determina el mejor destino.</p>
+        </div>
+
+        <div class="paso-item">
+          <div class="paso-numero">3</div>
+          <h3>Genera Impacto</h3>
+          <p>Dona, repara o recicla según la recomendación.</p>
+        </div>
+      </div>
+    </ion-card-content>
   </ion-card>
 
 </ion-content>
