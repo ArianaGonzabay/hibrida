@@ -19,43 +19,53 @@
 
       <img #image [src]="imageUrl()" alt="Imagen seleccionada" />
      
-       <!-- CARGA DE PREDICCIÓN - INICIO -->
- @if(modelLoaded()) {
+        <!-- CARGA DE PREDICCIÓN - INICIO -->
+        @if(modelLoaded()) {
 
-  <div class="ion-text-center ion-padding-top ion-padding-bottom">
-     <!-- Registro de la función predict para el evento click -->
-    <ion-button fill="outline" color="success" (click)="predict()">Predecir</ion-button>
+          <div class="ion-text-center ion-padding-top ion-padding-bottom">
+            <!-- Registro de la función predict para el evento click -->
+            <ion-button fill="outline" color="success" (click)="predict()">Predecir</ion-button>
     
-  </div>
+          </div>
   
 
-  <ion-list>
-    <ion-item>
-      <ion-label>Clases:  {{ classLabels  }} </ion-label>
-    </ion-item>
-    <!-- Itere sobre la lista de predicciones -->
-    @for (item of predictions; track $index) {
-      <ion-item>
-          <ion-label> {{  item?.className  }} :  {{  item?.probability | percent  }} </ion-label>
-        </ion-item>
-    }
-  </ion-list>
+          <ion-list>
 
-}
-<!-- CARGA DE PREDICCIÓN - FIN -->
+            <ion-item>
+              <ion-label>Clases:  {{ classLabels  }} </ion-label>
+            </ion-item>
 
+            <!-- Itere sobre la lista de predicciones -->
+            @for (item of predictions; track $index) {
+              <ion-item>
+                <ion-label> {{  item?.className  }} :  {{  item?.probability | percent  }} </ion-label>
+                
+                <!-- Check if the item className is "Donar" -->
+                @if(item?.className === 'Donar') {
+                  <a href="https://www.fundacionreinadequito.org/elropero" target="_blank">Donde donar</a>
+                }
+
+                @if(item?.className === 'Reparar/Reciclar') {
+                  <a href="https://www.eldoblez.ec/" target="_blank">Donde arreglar</a>
+                }
+              </ion-item>
+            }
+
+          </ion-list>
+        }
+        <!-- CARGA DE PREDICCIÓN - FIN -->
     </ion-card>
   }
   <!-- CARGA DE IMAGEN - FIN -->       
 
   <!-- Referencia en plantilla #fileInput, callback para el evento change y oculte el elemento -->
- <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+  <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
 
- <!-- Disparo del evento click de fileInput -->
- <ion-fab slot="fixed" vertical="bottom" horizontal="center">
-     <ion-fab-button (click)="fileInput.click()">
-         <ion-icon name="cloud-upload-outline"></ion-icon>
-     </ion-fab-button>
- </ion-fab>
+  <!-- Disparo del evento click de fileInput -->
+  <ion-fab slot="fixed" vertical="bottom" horizontal="center">
+    <ion-fab-button (click)="fileInput.click()">
+      <ion-icon name="cloud-upload-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>
