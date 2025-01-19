@@ -7,69 +7,146 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">GreenThreads</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- <ion-header collapse="condense"> -->
+  <!-- <ion-toolbar> -->
+  <!-- <ion-title size="large">Analiza tu prenda</ion-title> -->
+  <div class="instructions">
+    <h2>Instrucciones para subir tu prenda</h2>
+    <ion-list>
+      <ion-item>
+        <ion-icon name="image" slot="start"></ion-icon>
+        <ion-label>
+          <h3>1. Sube una imagen</h3>
+          <p>Asegúrate de que la prenda sea claramente visible.</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="sunny" slot="start"></ion-icon>
+        <ion-label>
+          <h3>2. Buena iluminación</h3>
+          <p>La imagen debe estar bien iluminada para obtener mejores resultados.</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- </ion-toolbar> -->
+  <!-- </ion-header> -->
 
   <!-- CARGA DE IMAGEN - INICIO -->
   @if(imageReady()) {
-    <ion-card>
+  <ion-card>
 
-      <img #image [src]="imageUrl()" alt="Imagen seleccionada" />
-     
-        <!-- CARGA DE PREDICCIÓN - INICIO -->
-        @if(modelLoaded()) {
+    <img #image [src]="imageUrl()" alt="Imagen seleccionada" />
 
-          <div class="ion-text-center ion-padding-top ion-padding-bottom">
-            <!-- Registro de la función predict para el evento click -->
-            <ion-button fill="outline" color="success" (click)="predict()">Predecir</ion-button>
-    
-          </div>
-  
+    <!-- CARGA DE PREDICCIÓN - INICIO -->
+    @if(modelLoaded()) {
 
-          <ion-list>
+    <div class="ion-text-center ion-padding-top ion-padding-bottom">
+      <!-- Registro de la función predict para el evento click -->
+      <ion-button fill="outline" color="success" (click)="predict()">Predecir</ion-button>
 
-            <ion-item>
-              <ion-icon name="list" slot="start"></ion-icon>
-              <ion-label>Clases: {{ classLabels }}</ion-label>
-            </ion-item>
+    </div>
 
-            <!-- Itere sobre la lista de predicciones -->
-            @for (item of predictions; track $index) {
-              <ion-item>
-                <ion-label class="ion-text-wrap">
-                  <h3>{{item?.className}}</h3>
-                  <p>Probabilidad: {{item?.probability | percent:'1.0-1'}}</p>
-                </ion-label>
-               
-                @if(item?.className === 'Donar') {
-                  <ion-button fill="clear" color="success" href="https://www.fundacionreinadequito.org/elropero" target="_blank">
-                    Ver lugares para donar
-                  </ion-button>
-                }
-                @if(item?.className === 'Reparar/Reciclar') {
-                  <ion-button fill="clear" color="success" href="https://www.eldoblez.ec/" target="_blank">
-                    Ver talleres de reparación
-                  </ion-button>
-                }
-              </ion-item>
-            }
 
-          </ion-list>
-        }
-        <!-- CARGA DE PREDICCIÓN - FIN -->
-    </ion-card>
+    <ion-list>
+
+      <ion-item>
+        <ion-icon name="list" slot="start"></ion-icon>
+        <ion-label>Clases: {{ classLabels }}</ion-label>
+      </ion-item>
+
+      <!-- Itere sobre la lista de predicciones -->
+      @for (item of predictions; track $index) {
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <h3>{{item?.className}}</h3>
+          <p>Probabilidad: {{item?.probability | percent:'1.0-1'}}</p>
+        </ion-label>
+
+        <ion-button fill="clear" color="success" (click)="toggleDetails(item?.className)">
+          {{ item?.className === 'Donar' ? 'Ver lugares para donar' : 'Ver talleres de reparación' }}
+        </ion-button>
+      </ion-item>
+
+      <!-- Detalles de lugares para donar -->
+      <div [class.show-details]="item?.className === 'Donar' && showDonationPlaces" class="details">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h4>Fundación Reina de Quito</h4>
+              <a href="https://www.fundacionreinadequito.org/elropero" target="_blank" class="green-link">Visitar
+                sitio</a>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h4>Vistiendo Sonrisas</h4>
+              <a href="https://vistiendosonrisas.com/" target="_blank" class="green-link">Visitar sitio</a>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h4>Fundación Huellas de Amor</h4>
+              <a href="https://www.huellasdeamor.org" target="_blank" class="green-link">Visitar sitio</a>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h4>Fundación María Gracia</h4>
+              <a href="https://www.fundacionmariagracia.org.ec/obsequia-lo-que-no-usas/" target="_blank"
+                class="green-link">Visitar sitio</a>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <!-- Detalles de talleres de reparación -->
+      <div [class.show-details]="item?.className === 'Reparar/Reciclar' && showRepairPlaces" class="details">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h4>El Doblez</h4>
+              <a href="https://www.eldoblez.ec/" target="_blank" class="green-link">Visitar sitio</a>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h4>Martinizing</h4>
+              <a href="https://www.martinizing-ec.com/reparaciones/" target="_blank" class="green-link">Visitar
+                sitio</a>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h4>Patagonia</h4>
+              <a href="https://ec.patagonia.com/pages/reparaciones?srsltid=AfmBOoomIzhFFL7PNbb7jwzg1jnokvmj2Nc21V44RG8Uu9O-5Iw0q-TH"
+                target="_blank" class="green-link">Visitar sitio</a>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h4>El Entalle</h4>
+              <a href="https://www.cci.com.ec/el-entallle/" target="_blank" class="green-link">Visitar sitio</a>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+      }
+
+    </ion-list>
+    }
+    <!-- CARGA DE PREDICCIÓN - FIN -->
+  </ion-card>
   }
-  <!-- CARGA DE IMAGEN - FIN -->       
+  <!-- CARGA DE IMAGEN - FIN -->
 
   <!-- Referencia en plantilla #fileInput, callback para el evento change y oculte el elemento -->
   <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
 
   <!-- Disparo del evento click de fileInput -->
   <ion-fab slot="fixed" vertical="bottom" horizontal="center">
-    <ion-fab-button (click)="fileInput.click()">
+    <ion-fab-button (click)="fileInput.click()" color="success">
       <ion-icon name="cloud-upload-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
