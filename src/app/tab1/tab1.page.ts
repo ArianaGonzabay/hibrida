@@ -2,11 +2,13 @@ import { Component, signal, ViewChild, ElementRef } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonFab, IonFabButton, IonIcon, IonCard, IonCardContent, IonButton, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import { addIcons } from 'ionicons';
-import { cloudUploadOutline } from 'ionicons/icons';
+import { cloudUploadOutline, list, analytics, heart, refresh, refreshOutline, scanOutline, hammer, imageOutline, camera, locationOutline, callOutline, timeOutline } from 'ionicons/icons';
 /* Importe el servicio */
 import { TeachablemachineService } from '../services/teachablemachine.service';
 /* Importe el pipe */
 import { PercentPipe } from '@angular/common';
+
+import {LoadingController} from '@ionic/angular';
 
 
 @Component({
@@ -29,9 +31,9 @@ export class Tab1Page {
   classLabels: string[] = [];
   
   /* Registre el servicio en el constructor */
-  constructor(private teachablemachine: TeachablemachineService) {
+  constructor(private teachablemachine: TeachablemachineService, private loadingCtrl: LoadingController) {
     /*Registre el ícono*/
-    addIcons({ cloudUploadOutline });
+    addIcons({list,locationOutline,callOutline,timeOutline,cloudUploadOutline,refreshOutline,scanOutline,heart,hammer,imageOutline,camera,analytics,refresh});
   }
 
   /* El método onSubmit para enviar los datos del formulario mediante el servicio */
@@ -62,12 +64,19 @@ export class Tab1Page {
 
   /* Método para obtener la predicción a partir de la imagen */
   async predict() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Analizando imagen...',
+      spinner: 'circular'
+    });
+    await loading.present();
+
     try {
-      const image = this.imageElement.nativeElement;
-      this.predictions = await this.teachablemachine.predict(image);
+      const predictions = await this.teachablemachine.predict(this.imageElement.nativeElement);
+      this.predictions = predictions;
     } catch (error) {
-      console.error(error);
-      alert('Error al realizar la predicción.');
+      console.error('Error al realizar la predicción:', error);
+    } finally {
+      await loading.dismiss();
     }
   }
 

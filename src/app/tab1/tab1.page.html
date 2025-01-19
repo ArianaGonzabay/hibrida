@@ -9,7 +9,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Teachable Machine</ion-title>
+      <ion-title size="large">GreenThreads</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -32,21 +32,27 @@
           <ion-list>
 
             <ion-item>
-              <ion-label>Clases:  {{ classLabels  }} </ion-label>
+              <ion-icon name="list" slot="start"></ion-icon>
+              <ion-label>Clases: {{ classLabels }}</ion-label>
             </ion-item>
 
             <!-- Itere sobre la lista de predicciones -->
             @for (item of predictions; track $index) {
               <ion-item>
-                <ion-label> {{  item?.className  }} :  {{  item?.probability | percent  }} </ion-label>
-                
-                <!-- Check if the item className is "Donar" -->
+                <ion-label class="ion-text-wrap">
+                  <h3>{{item?.className}}</h3>
+                  <p>Probabilidad: {{item?.probability | percent:'1.0-1'}}</p>
+                </ion-label>
+               
                 @if(item?.className === 'Donar') {
-                  <a href="https://www.fundacionreinadequito.org/elropero" target="_blank">Donde donar</a>
+                  <ion-button fill="clear" color="success" href="https://www.fundacionreinadequito.org/elropero" target="_blank">
+                    Ver lugares para donar
+                  </ion-button>
                 }
-
                 @if(item?.className === 'Reparar/Reciclar') {
-                  <a href="https://www.eldoblez.ec/" target="_blank">Donde arreglar</a>
+                  <ion-button fill="clear" color="success" href="https://www.eldoblez.ec/" target="_blank">
+                    Ver talleres de reparación
+                  </ion-button>
                 }
               </ion-item>
             }
