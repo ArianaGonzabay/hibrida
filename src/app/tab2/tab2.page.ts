@@ -6,13 +6,14 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 /* Importe el servicio */
 import { ProviderService } from '../services/provider.service';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 //Decorator del componente
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
   standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [ReactiveFormsModule, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonSelect, IonSelectOption, IonTextarea,IonButton,
     IonList, IonItem, IonLabel, IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent]
 })
@@ -57,5 +58,14 @@ export class Tab2Page {
       this.dataList = data;
     });
   }
+
+  calcularPorcentaje(tipo: string): number {
+    if (!this.dataList || this.dataList.length === 0) return 0;
+    
+    const cantidad = this.dataList.filter(item => item.score === tipo).length;
+    const porcentaje = (cantidad / this.dataList.length) * 100;
+    return Math.round(porcentaje);
+  }
+  
 
 }
