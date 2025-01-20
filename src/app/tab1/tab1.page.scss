@@ -13,16 +13,27 @@
     margin-bottom: 10px;
   }
 
-  .details {
-    display: none;
-  }
+  // .details {
+  //   display: none;
+  // }
   
-  .show-details {
-    display: block;
-  }
+  // .show-details {
+  //   display: block;
+  // }
 
   .green-link {
     color: #28a745;
   }
 
+  .horizontal-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+  
+  .horizontal-list ion-item {
+    flex: 1 0 auto; /* Esto asegura que los elementos se ajusten de manera flexible */
+    margin-right: 10px; /* Espaciado entre los elementos */
+  }
   

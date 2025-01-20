@@ -1,54 +1,40 @@
 import { Component } from '@angular/core';
-/*Importe los componentes de la UI*/
+import { CommonModule } from '@angular/common';
 import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonSelect, IonSelectOption, IonTextarea, IonButton, IonList, IonItem, IonLabel, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-/* Importe el módulo para formularios reactivos */
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-/* Importe el servicio */
 import { ProviderService } from '../services/provider.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-//Decorator del componente
+
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [ReactiveFormsModule, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonSelect, IonSelectOption, IonTextarea,IonButton,
-    IonList, IonItem, IonLabel, IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent]
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonSelect, IonSelectOption, IonTextarea, IonButton,
+    IonList, IonItem, IonLabel, IonHeader, IonToolbar, IonTitle, IonContent
+  ]
 })
 export class Tab2Page {
-  /*Instancie un formulario*/
   myForm: FormGroup = new FormGroup({
     score: new FormControl("", Validators.required),
     opinion: new FormControl("", Validators.required)
   });
-  
 
-  // /*El método onSubmit para enviar los datos del formulario mediante el servicio*/
-  // onSubmit() {
-  //   console.log(this.myForm.value);
-  //   alert(this.myForm.controls["score"].value)
-  //   this.myForm.reset()
-  // }
-
-  /* Nombre de la colección */
   collectionName = 'reviews';
-
-  /*Arreglo con datos locales*/
   dataList: any[] = [];
 
-  /* Inyecte la dependencia a Firestore */
   constructor(private providerService: ProviderService) { }
 
-   /* El método onSubmit para enviar los datos del formulario mediante el servicio */
-   onSubmit() {
+  onSubmit() {
     this.providerService.createDocument(this.collectionName, this.myForm.value).then(() => {
         this.myForm.reset()
     });
   }
 
-  /*Al inicializar, carga los datos*/
   ngOnInit() {
     this.loadData();
   }
@@ -66,6 +52,9 @@ export class Tab2Page {
     const porcentaje = (cantidad / this.dataList.length) * 100;
     return Math.round(porcentaje);
   }
-  
 
+  // Definir la función trackByIndex para mejorar el rendimiento en listas con *ngFor
+  trackByIndex(index: number, item: any): number {
+    return index; // Devuelve el índice como clave única
+  }
 }

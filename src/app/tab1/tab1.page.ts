@@ -2,13 +2,11 @@ import { Component, signal, ViewChild, ElementRef } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonFab, IonFabButton, IonIcon, IonCard, IonCardContent, IonButton, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import { addIcons } from 'ionicons';
-import { cloudUploadOutline, list, analytics, heart, refresh, refreshOutline, scanOutline, hammer, imageOutline, camera, locationOutline, callOutline, timeOutline, sunny, image } from 'ionicons/icons';
+import { cloudUploadOutline, image, sunny } from 'ionicons/icons';
 /* Importe el servicio */
 import { TeachablemachineService } from '../services/teachablemachine.service';
 /* Importe el pipe */
 import { PercentPipe } from '@angular/common';
-
-import {LoadingController} from '@ionic/angular';
 
 
 @Component({
@@ -19,25 +17,8 @@ import {LoadingController} from '@ionic/angular';
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent, IonFab, IonFabButton, IonIcon, IonCard, IonCardContent, IonButton, IonList, IonItem, IonLabel, PercentPipe],
 })
 export class Tab1Page {
-  showDonationPlaces: boolean = false;
-  showRepairPlaces: boolean = false;
-
-  toggleDetails(className: string): void {
-    if (className === 'Donar') {
-      this.showDonationPlaces = !this.showDonationPlaces;
-      if (this.showDonationPlaces) {
-        this.showRepairPlaces = false;
-      }
-    } else if (className === 'Reparar/Reciclar') {
-      this.showRepairPlaces = !this.showRepairPlaces;
-      if (this.showRepairPlaces) {
-        this.showDonationPlaces = false;
-      }
-    }
-  }
-  showInstructions = true;
+  /* Declare la referencia al elemento con el id image */
   @ViewChild('image', { static: false }) imageElement!: ElementRef<HTMLImageElement>;
-
   imageReady = signal(false)
   imageUrl = signal("")
   /* Lista de predicciones */
@@ -47,14 +28,13 @@ export class Tab1Page {
   classLabels: string[] = [];
   
   /* Registre el servicio en el constructor */
-  constructor(private teachablemachine: TeachablemachineService, private loadingCtrl: LoadingController) {
+  constructor(private teachablemachine: TeachablemachineService) {
     /*Registre el ícono*/
-    addIcons({image,sunny,list,cloudUploadOutline,locationOutline,callOutline,timeOutline,refreshOutline,scanOutline,heart,hammer,imageOutline,camera,analytics,refresh});
+    addIcons({image,sunny,cloudUploadOutline});
   }
 
   /* El método onSubmit para enviar los datos del formulario mediante el servicio */
   onFileSelected(event: Event): void {
-    this.showInstructions = false;
     const input = event.target as HTMLInputElement;
 
     if (input.files && input.files.length > 0) {
@@ -81,19 +61,12 @@ export class Tab1Page {
 
   /* Método para obtener la predicción a partir de la imagen */
   async predict() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Analizando imagen...',
-      spinner: 'circular'
-    });
-    await loading.present();
-
     try {
-      const predictions = await this.teachablemachine.predict(this.imageElement.nativeElement);
-      this.predictions = predictions;
+      const image = this.imageElement.nativeElement;
+      this.predictions = await this.teachablemachine.predict(image);
     } catch (error) {
-      console.error('Error al realizar la predicción:', error);
-    } finally {
-      await loading.dismiss();
+      console.error(error);
+      alert('Error al realizar la predicción.');
     }
   }
 

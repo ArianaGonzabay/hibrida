@@ -38,24 +38,25 @@
       <ion-item lines="none" class="ion-margin-bottom">
         <ion-label>Total de opiniones: {{ dataList.length }}</ion-label>
       </ion-item>
-
+    
       <div class="ion-padding">
         <div class="ion-margin-bottom">
           <ion-label>Buenas: {{ calcularPorcentaje('bueno') }}%</ion-label>
-          <ion-progress-bar value="{{ calcularPorcentaje('bueno')/100 }}" color="success"></ion-progress-bar>
+          <ion-progress-bar [value]="calcularPorcentaje('bueno') / 100" color="success"></ion-progress-bar>
         </div>
-
+    
         <div class="ion-margin-bottom">
           <ion-label>Regulares: {{ calcularPorcentaje('regular') }}%</ion-label>
-          <ion-progress-bar value="{{ calcularPorcentaje('regular')/100 }}" color="warning"></ion-progress-bar>
+          <ion-progress-bar [value]="calcularPorcentaje('regular') / 100" color="warning"></ion-progress-bar>
         </div>
-
+    
         <div class="ion-margin-bottom">
           <ion-label>Malas: {{ calcularPorcentaje('malo') }}%</ion-label>
-          <ion-progress-bar value="{{ calcularPorcentaje('malo')/100 }}" color="danger"></ion-progress-bar>
+          <ion-progress-bar [value]="calcularPorcentaje('malo') / 100" color="danger"></ion-progress-bar>
         </div>
       </div>
     </ion-card-content>
+    
   </ion-card>
 
   <ion-card class="ion-padding-bottom ion-margin-bottom opiniones-card">
@@ -66,12 +67,10 @@
     <ion-card-content>
       <ion-list>
         <!-- CARGA DE DATOS - INICIO -->
-        @for (datum of dataList; track $index) {
-        <ion-item>
+        <ion-item *ngFor="let datum of dataList; trackBy: trackByIndex">
           <ion-label> {{ datum?.score }} </ion-label>
           <ion-label> {{ datum?.opinion }} </ion-label>
         </ion-item>
-        }
         <!-- CARGA DE DATOS - FIN -->
       </ion-list>
     </ion-card-content>
